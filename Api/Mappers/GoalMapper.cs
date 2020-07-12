@@ -43,6 +43,7 @@ namespace Api.Mappers
         {
             var goalModel = new GoalModel
             {
+                Id = goal.Id,
                 Title = goal.Title,
                 Count = goal.Count
             };

@@ -30,7 +30,6 @@ namespace Api.IntegrationTests.Repositories
             var result = await sut.GetAllAsync();
 
             // Asserts
-            result.Should().HaveCount(3);
             result.Should().Contain(g =>
                 g.Title == "Study English" &&
                 g.Count == 110);

@@ -65,7 +65,8 @@ namespace Api.UnitTests.Api.Mappers
 
             // Asserts
             result.Should().BeOfType<Goal>();
-            result.Should().BeEquivalentTo(goalModel);
+            result.Should().BeEquivalentTo(goalModel,
+                opt => opt.Excluding(src => src.Id));
         }
 
         [Theory, AutoNSubstituteData]
