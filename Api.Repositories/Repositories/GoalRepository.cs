@@ -32,5 +32,19 @@ namespace Api.Repositories.Repositories
                 return goals.ToList();
             }
         }
+
+        public async Task<bool> CreateAsync(Goal goal)
+        {
+            using (var connection = SqlConnectionFactory.GetConnection())
+            {
+                connection.Open();
+
+                var rollsAffeected = await connection.ExecuteAsync(
+                    "INSERT INTO [Goal] (Id, Title, Count) " +
+                    "VALUES (@Id, @Title, @Count)", goal);
+
+                return rollsAffeected == 1;
+            }
+        }
     }
 }

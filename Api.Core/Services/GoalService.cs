@@ -1,6 +1,7 @@
 ﻿using Api.Domain.Entities;
 using Api.Domain.Repositories;
 using Api.Domain.Services;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -14,7 +15,7 @@ namespace Api.Core.Services
             IGoalRepository goalRepository)
         {
             GoalRepository = goalRepository
-                ?? throw new System.ArgumentNullException(nameof(goalRepository));
+                ?? throw new ArgumentNullException(nameof(goalRepository));
         }
 
         public async Task<List<Goal>> GetAllAsync()
@@ -22,6 +23,15 @@ namespace Api.Core.Services
             var goals = await GoalRepository.GetAllAsync();
 
             return goals;
+        }
+
+        public async Task<bool> CreateAsync(Goal goal)
+        {
+            goal.Id = Guid.NewGuid();
+
+            var created = await GoalRepository.CreateAsync(goal);
+
+            return created;
         }
     }
 }

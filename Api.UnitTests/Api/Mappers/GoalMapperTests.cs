@@ -1,4 +1,5 @@
-﻿using Api.Domain.Entities;
+﻿using Api.Controllers.Models;
+using Api.Domain.Entities;
 using Api.Mappers;
 using Api.UnitTests.AutoData;
 using FluentAssertions;
@@ -9,6 +10,8 @@ namespace Api.UnitTests.Api.Mappers
 {
     public class GoalMapperTests
     {
+        //// TODO: Use InlineData in empty/null tests 
+
         [Theory, AutoNSubstituteData]
         public void MapGoalListToGoalModelList_WhenListFilled_ShouldMapCorrectly(
             List<Goal> goals,
@@ -19,6 +22,7 @@ namespace Api.UnitTests.Api.Mappers
 
             // Assert
             result.Should().NotBeNullOrEmpty();
+            result.Should().BeOfType<List<GoalModel>>();
             result.Should().BeEquivalentTo(goals,
                 opt => opt.Excluding(src => src.Id));
         }
@@ -49,6 +53,47 @@ namespace Api.UnitTests.Api.Mappers
 
             // Assert
             result.Should().BeEmpty();
+        }
+
+        [Theory, AutoNSubstituteData]
+        public void MapGoalModelToGoal_ShouldMapCorrectly(
+            GoalModel goalModel,
+            GoalMapper sut)
+        {
+            // Act
+            var result = sut.Map(goalModel);
+
+            // Asserts
+            result.Should().BeOfType<Goal>();
+            result.Should().BeEquivalentTo(goalModel);
+        }
+
+        [Theory, AutoNSubstituteData]
+        public void MapGoalModelToGoal_WhenGoalEmpty_ShouldReturnEmpty(
+            GoalMapper sut)
+        {
+            // Act
+            var result = sut.Map(new GoalModel());
+
+            // Asserts
+            result.Should().BeOfType<Goal>();
+            result.Title.Should().BeNull();
+            result.Count.Should().Be(default);
+            result.Count.Should().Be(default);
+        }
+
+        [Theory, AutoNSubstituteData]
+        public void MapGoalModelToGoal_WhenGoalNull_ShouldReturnEmpty(
+            GoalMapper sut)
+        {
+            // Act
+            var result = sut.Map((GoalModel)null);
+
+            // Asserts
+            result.Should().BeOfType<Goal>();
+            result.Title.Should().BeNull();
+            result.Count.Should().Be(default);
+            result.Count.Should().Be(default);
         }
     }
 }

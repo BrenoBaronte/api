@@ -7,5 +7,6 @@ namespace Api.Controllers.Mappers.Interfaces
     public interface IGoalMapper
     {
         List<GoalModel> Map(List<Goal> goals);
+        Goal Map(GoalModel goalModel);
     }
 }

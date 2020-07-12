@@ -7,5 +7,6 @@ namespace Api.Domain.Services
     public interface IGoalService
     {
         Task<List<Goal>> GetAllAsync();
+        Task<bool> CreateAsync(Goal goal);
     }
 }

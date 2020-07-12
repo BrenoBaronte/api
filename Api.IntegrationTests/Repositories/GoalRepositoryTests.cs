@@ -1,4 +1,5 @@
-﻿using Api.IntegrationTests.AutoData;
+﻿using Api.Domain.Entities;
+using Api.IntegrationTests.AutoData;
 using Api.Repositories.DbConnection;
 using Api.Repositories.Repositories;
 using AutoFixture.Idioms;
@@ -39,6 +40,22 @@ namespace Api.IntegrationTests.Repositories
             result.Should().Contain(g =>
                 g.Title == "Create Portfolio" &&
                 g.Count == 40);
+        }
+
+        //// TODO: Validate with get by id
+        [Theory, AutoDataNSubstitute]
+        public async Task CreateAsync_ShouldPerformCorrectly(
+            Goal goal,
+            SqlConnectionFactory sqlConnectionFactory)
+        {
+            // Arrange
+            var sut = new GoalRepository(sqlConnectionFactory);
+
+            // Act
+            var result = await sut.CreateAsync(goal);
+
+            // Asserts
+            result.Should().BeTrue();
         }
     }
 }
