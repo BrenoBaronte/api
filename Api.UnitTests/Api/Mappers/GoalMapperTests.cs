@@ -96,5 +96,47 @@ namespace Api.UnitTests.Api.Mappers
             result.Count.Should().Be(default);
             result.Count.Should().Be(default);
         }
+
+        [Theory, AutoNSubstituteData]
+        public void MapGoalToGoalModel_ShouldMapCorrectly(
+            Goal goal,
+            GoalMapper sut)
+        {
+            // Act
+            var result = sut.Map(goal);
+
+            // Asserts
+            result.Should().NotBeNull();
+            result.Should().BeOfType<GoalModel>();
+            result.Should().BeEquivalentTo(goal);
+        }
+
+        [Theory, AutoNSubstituteData]
+        public void MapGoalToGoalModel_WhenGoalModelEmpty_ShouldReturnEmpty(
+            GoalMapper sut)
+        {
+            // Act
+            var result = sut.Map(new Goal());
+
+            // Asserts
+            result.Should().BeOfType<GoalModel>();
+            result.Title.Should().BeNull();
+            result.Count.Should().Be(default);
+            result.Count.Should().Be(default);
+        }
+
+        [Theory, AutoNSubstituteData]
+        public void MapGoalToGoalModel_WhenGoalModelNull_ShouldReturnEmpty(
+            GoalMapper sut)
+        {
+            // Act
+            var result = sut.Map((Goal)null);
+
+            // Asserts
+            result.Should().BeOfType<GoalModel>();
+            result.Title.Should().BeNull();
+            result.Count.Should().Be(default);
+            result.Count.Should().Be(default);
+        }
     }
 }

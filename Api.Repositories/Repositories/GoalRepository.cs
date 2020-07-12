@@ -33,6 +33,21 @@ namespace Api.Repositories.Repositories
             }
         }
 
+        public async Task<Goal> GetAsync(Guid goalId)
+        {
+            using (var connection = SqlConnectionFactory.GetConnection())
+            {
+                connection.Open();
+
+                var goal = (await connection.QueryAsync<Goal>(
+                    "SELECT * FROM [Goal] (NOLOCK) WHERE Id=@goalId",
+                    new { goalId }))
+                    .FirstOrDefault();
+
+                return goal;
+            }
+        }
+
         public async Task<bool> CreateAsync(Goal goal)
         {
             using (var connection = SqlConnectionFactory.GetConnection())

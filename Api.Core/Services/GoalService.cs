@@ -33,5 +33,12 @@ namespace Api.Core.Services
 
             return created;
         }
+
+        public async Task<Goal> GetAsync(Guid goalId)
+        {
+            var goal = await GoalRepository.GetAsync(goalId);
+
+            return goal;
+        }
     }
 }

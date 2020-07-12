@@ -30,6 +30,16 @@ namespace Api.Mappers
             return goal;
         }
 
+        public GoalModel Map(Goal goal)
+        {
+            if (goal == null)
+                return new GoalModel();
+
+            var goalModel = ToGoalModel(goal);
+
+            return goalModel;
+        }
+
         private static Goal ToGoal(GoalModel goalModel)
         {
             return new Goal

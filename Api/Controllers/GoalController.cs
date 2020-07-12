@@ -33,6 +33,19 @@ namespace Api.Controllers
             return Ok(goalsModels);
         }
 
+        [HttpGet("{goalId}")]
+        public async Task<IActionResult> GetById([FromRoute] Guid goalId)
+        {
+            var goal = await GoalService.GetAsync(goalId);
+
+            if (goal == null)
+                return NotFound();
+
+            var goalModel = GoalMapper.Map(goal);
+
+            return Ok(goalModel);
+        }
+
         [HttpPost]
         public async Task<IActionResult> Post(
             [FromBody] GoalModel goalModel)

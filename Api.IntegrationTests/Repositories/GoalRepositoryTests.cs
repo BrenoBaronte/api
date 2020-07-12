@@ -4,6 +4,7 @@ using Api.Repositories.DbConnection;
 using Api.Repositories.Repositories;
 using AutoFixture.Idioms;
 using FluentAssertions;
+using System;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -41,7 +42,39 @@ namespace Api.IntegrationTests.Repositories
                 g.Count == 40);
         }
 
-        //// TODO: Validate with get by id
+        [Theory, AutoDataNSubstitute]
+        public async Task GetAsync_ShouldPerformCorrectly(
+            SqlConnectionFactory sqlConnectionFactory)
+        {
+            // Arrange
+            var goalId = new Guid("ca41679d-ffb0-4899-a357-9f4de75d278a");
+            var sut = new GoalRepository(sqlConnectionFactory);
+
+            // Act
+            var result = await sut.GetAsync(goalId);
+
+            // Asserts
+            result.Should().NotBeNull();
+            result.Id.Should().Be(new Guid("ca41679d-ffb0-4899-a357-9f4de75d278a"));
+            result.Title.Should().Be("Check E-mails");
+            result.Count.Should().Be(50);
+        }
+
+        [Theory, AutoDataNSubstitute]
+        public async Task GetAsync_WhenGoalDoesntExists_ShouldPerformCorrectly(
+            SqlConnectionFactory sqlConnectionFactory)
+        {
+            // Arrange
+            var goalId = Guid.NewGuid();
+            var sut = new GoalRepository(sqlConnectionFactory);
+
+            // Act
+            var result = await sut.GetAsync(goalId);
+
+            // Asserts
+            result.Should().BeNull();
+        }
+
         [Theory, AutoDataNSubstitute]
         public async Task CreateAsync_ShouldPerformCorrectly(
             Goal goal,

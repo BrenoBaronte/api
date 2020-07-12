@@ -4,6 +4,7 @@ using Api.UnitTests.AutoData;
 using AutoFixture.Idioms;
 using FluentAssertions;
 using NSubstitute;
+using NSubstitute.ReturnsExtensions;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -36,6 +37,41 @@ namespace Api.UnitTests.Core.Services
             result.Should().BeEquivalentTo(goals);
             result.Should().BeOfType<List<Goal>>();
             await sut.GoalRepository.Received(1).GetAllAsync();
+        }
+
+        [Theory, AutoNSubstituteData]
+        public async Task GetAsync_ShouldCallMethodCorrectly(
+            Guid goalId,
+            Goal goal,
+            GoalService sut)
+        {
+            // Arrange
+            sut.GoalRepository.GetAsync(Arg.Is(goalId)).Returns(goal);
+
+            // Act
+            var result = await sut.GetAsync(goalId);
+
+            // Asserts
+            result.Should().NotBeNull();
+            result.Should().BeEquivalentTo(goal);
+            result.Should().BeOfType<Goal>();
+            await sut.GoalRepository.Received(1).GetAsync(Arg.Is(goalId));
+        }
+
+        [Theory, AutoNSubstituteData]
+        public async Task GetAsync_WhenGoalNull_ShouldReturnNull(
+            Guid goalId,
+            GoalService sut)
+        {
+            // Arrange
+            sut.GoalRepository.GetAsync(Arg.Is(goalId)).ReturnsNull();
+
+            // Act
+            var result = await sut.GetAsync(goalId);
+
+            // Asserts
+            result.Should().BeNull();
+            await sut.GoalRepository.Received(1).GetAsync(Arg.Is(goalId));
         }
 
         [Theory, AutoNSubstituteData]

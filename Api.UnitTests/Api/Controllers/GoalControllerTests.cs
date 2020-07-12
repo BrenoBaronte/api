@@ -6,6 +6,8 @@ using AutoFixture.Idioms;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using NSubstitute;
+using NSubstitute.ReturnsExtensions;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Xunit;
@@ -35,10 +37,51 @@ namespace Api.UnitTests.Api.Controllers
             var result = await sut.Get();
 
             // Asserts
+            result.Should().NotBeNull();
             result.Should().BeOfType<OkObjectResult>();
             ((OkObjectResult)result).Value.Should().BeEquivalentTo(goalModels);
             await sut.GoalService.Received(1).GetAllAsync();
             sut.GoalMapper.Received(1).Map(Arg.Is(goals));
+        }
+
+        [Theory, AutoNSubstituteData]
+        public async Task GetById_ShouldCallMethodsCorrectly(
+            Guid goalId,
+            Goal goal,
+            GoalModel goalModel,
+            GoalController sut)
+        {
+            // Arranges
+            sut.GoalService.GetAsync(Arg.Is(goalId)).Returns(goal);
+            sut.GoalMapper.Map(Arg.Is(goal)).Returns(goalModel);
+
+            // Act
+            var result = await sut.GetById(goalId);
+
+            // Asserts
+            result.Should().NotBeNull();
+            result.Should().BeOfType<OkObjectResult>();
+            ((OkObjectResult)result).Value.Should().BeEquivalentTo(goalModel);
+            await sut.GoalService.Received(1).GetAsync(Arg.Is(goalId));
+            sut.GoalMapper.Received(1).Map(Arg.Is(goal));
+        }
+
+        [Theory, AutoNSubstituteData]
+        public async Task GetById_WhenGoalNull_ShouldReturnNotFound(
+            Guid goalId,
+            GoalController sut)
+        {
+            // Arranges
+            sut.GoalService.GetAsync(Arg.Is(goalId)).ReturnsNull();
+
+            // Act
+            var result = await sut.GetById(goalId);
+
+            // Asserts
+            result.Should().NotBeNull();
+            result.Should().BeOfType<NotFoundResult>();
+            await sut.GoalService.Received(1).GetAsync(Arg.Is(goalId));
+            sut.GoalMapper.DidNotReceive().Map(Arg.Any<Goal>());
         }
 
         [Theory, AutoNSubstituteData]

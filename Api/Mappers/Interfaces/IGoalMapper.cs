@@ -8,5 +8,6 @@ namespace Api.Controllers.Mappers.Interfaces
     {
         List<GoalModel> Map(List<Goal> goals);
         Goal Map(GoalModel goalModel);
+        GoalModel Map(Goal goal);
     }
 }
