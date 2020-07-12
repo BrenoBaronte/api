@@ -2,6 +2,7 @@
 using Api.Domain.Repositories;
 using Api.Repositories.DbConnection.Interfaces;
 using Dapper;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -16,7 +17,7 @@ namespace Api.Repositories.Repositories
             ISqlConnectionFactory sqlConnectionFactory)
         {
             SqlConnectionFactory = sqlConnectionFactory
-                ?? throw new System.ArgumentNullException(nameof(sqlConnectionFactory));
+                ?? throw new ArgumentNullException(nameof(sqlConnectionFactory));
         }
 
         public async Task<List<Goal>> GetAllAsync()

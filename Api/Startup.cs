@@ -37,7 +37,7 @@ namespace Api
             builder.RegisterType<GoalService>().As<IGoalService>().InstancePerLifetimeScope();
             builder.RegisterType<GoalMapper>().As<IGoalMapper>().InstancePerLifetimeScope();
 
-            var connectionString = "{{your-connection-string}}";
+            var connectionString = "{{your-connections-string}}";
             builder.RegisterType<SqlConnectionFactory>().As<ISqlConnectionFactory>()
                 .WithParameter("databaseConnectionString", connectionString)
                 .InstancePerLifetimeScope();

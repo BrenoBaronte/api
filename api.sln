@@ -18,6 +18,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Api.UnitTests", "Api.UnitTe
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Api.Repositories", "Api.Repositories\Api.Repositories.csproj", "{18B1BCE3-1BDA-4F0C-9CCC-10BE1811FE40}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Api.IntegrationTests", "Api.IntegrationTests\Api.IntegrationTests.csproj", "{A9D2A323-C822-4BAE-9E0E-3BDCAD70F23C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -88,6 +90,18 @@ Global
 		{18B1BCE3-1BDA-4F0C-9CCC-10BE1811FE40}.Release|x64.Build.0 = Release|Any CPU
 		{18B1BCE3-1BDA-4F0C-9CCC-10BE1811FE40}.Release|x86.ActiveCfg = Release|Any CPU
 		{18B1BCE3-1BDA-4F0C-9CCC-10BE1811FE40}.Release|x86.Build.0 = Release|Any CPU
+		{A9D2A323-C822-4BAE-9E0E-3BDCAD70F23C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A9D2A323-C822-4BAE-9E0E-3BDCAD70F23C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A9D2A323-C822-4BAE-9E0E-3BDCAD70F23C}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{A9D2A323-C822-4BAE-9E0E-3BDCAD70F23C}.Debug|x64.Build.0 = Debug|Any CPU
+		{A9D2A323-C822-4BAE-9E0E-3BDCAD70F23C}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{A9D2A323-C822-4BAE-9E0E-3BDCAD70F23C}.Debug|x86.Build.0 = Debug|Any CPU
+		{A9D2A323-C822-4BAE-9E0E-3BDCAD70F23C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A9D2A323-C822-4BAE-9E0E-3BDCAD70F23C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A9D2A323-C822-4BAE-9E0E-3BDCAD70F23C}.Release|x64.ActiveCfg = Release|Any CPU
+		{A9D2A323-C822-4BAE-9E0E-3BDCAD70F23C}.Release|x64.Build.0 = Release|Any CPU
+		{A9D2A323-C822-4BAE-9E0E-3BDCAD70F23C}.Release|x86.ActiveCfg = Release|Any CPU
+		{A9D2A323-C822-4BAE-9E0E-3BDCAD70F23C}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
