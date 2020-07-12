@@ -8,8 +8,11 @@ namespace Api.Mappers
     public class GoalMapper : IGoalMapper
     {
         public List<GoalModel> Map(List<Goal> goals)
-        {
+       {
             var goalsModels = new List<GoalModel>();
+
+            if (goals == null)
+                return goalsModels;
 
             foreach (var goal in goals)
             {
