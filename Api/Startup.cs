@@ -1,7 +1,11 @@
 ﻿using Api.Controllers.Mappers.Interfaces;
 using Api.Core.Services;
+using Api.Domain.Repositories;
 using Api.Domain.Services;
 using Api.Mappers;
+using Api.Repositories.DbConnection;
+using Api.Repositories.DbConnection.Interfaces;
+using Api.Repositories.Repositories;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Builder;
@@ -32,6 +36,13 @@ namespace Api
 
             builder.RegisterType<GoalService>().As<IGoalService>().InstancePerLifetimeScope();
             builder.RegisterType<GoalMapper>().As<IGoalMapper>().InstancePerLifetimeScope();
+
+            var connectionString = "{{your-connection-string}}";
+            builder.RegisterType<SqlConnectionFactory>().As<ISqlConnectionFactory>()
+                .WithParameter("databaseConnectionString", connectionString)
+                .InstancePerLifetimeScope();
+
+            builder.RegisterType<GoalRepository>().As<IGoalRepository>().InstancePerLifetimeScope();
 
             builder.Populate(services);
 
