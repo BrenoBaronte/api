@@ -37,7 +37,7 @@ namespace Api
             builder.RegisterType<GoalService>().As<IGoalService>().InstancePerLifetimeScope();
             builder.RegisterType<GoalMapper>().As<IGoalMapper>().InstancePerLifetimeScope();
 
-            var connectionString = "{{your-connections-string}}";
+            var connectionString = "Server=tcp:barontedb.database.windows.net,1433;Initial Catalog=barontedb;Persist Security Info=False;User ID=baronte;Password=Mypasss4p;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
             builder.RegisterType<SqlConnectionFactory>().As<ISqlConnectionFactory>()
                 .WithParameter("databaseConnectionString", connectionString)
                 .InstancePerLifetimeScope();
@@ -62,7 +62,7 @@ namespace Api
                 app.UseHsts();
             }
 
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
             app.UseMvc();
         }
     }

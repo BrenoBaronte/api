@@ -60,5 +60,21 @@ namespace Api.Controllers
                 ? Created(string.Empty, goalModel) as IActionResult
                 : StatusCode((int)HttpStatusCode.NotModified);
         }
+
+        [HttpPut]
+        public async Task<IActionResult> Put(
+            [FromBody] GoalModel goalModel)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var goal = GoalMapper.Map(goalModel);
+            var goalUpdated = await GoalService.UpdateAsync(goal);
+
+
+            return goalUpdated
+                ? Ok(goalModel) as IActionResult
+                : StatusCode((int)HttpStatusCode.NotModified);
+        }
     }
 }

@@ -142,5 +142,66 @@ namespace Api.UnitTests.Api.Controllers
             sut.GoalMapper.DidNotReceive().Map(Arg.Any<GoalModel>());
             await sut.GoalService.DidNotReceive().CreateAsync(Arg.Any<Goal>());
         }
+
+        [Theory, AutoNSubstituteData]
+        public async Task Put_ShouldCallMethodsCorrectly(
+            Goal goal,
+            GoalModel goalModel,
+            GoalController sut)
+        {
+            // Arranges
+            sut.GoalMapper.Map(Arg.Is(goalModel)).Returns(goal);
+            sut.GoalService.UpdateAsync(Arg.Is(goal)).Returns(true);
+
+            // Act
+            var result = await sut.Put(goalModel);
+
+            // Asserts
+            result.Should().NotBeNull();
+            result.Should().BeOfType<OkObjectResult>();
+            ((OkObjectResult)result).Value.Should().BeEquivalentTo(goalModel);
+            sut.GoalMapper.Received(1).Map(Arg.Is(goalModel));
+            await sut.GoalService.Received(1).UpdateAsync(Arg.Is(goal));
+        }
+
+        [Theory, AutoNSubstituteData]
+        public async Task Put_WhenUpdateAsyncFails_ShouldReturnNotModified(
+            Goal goal,
+            GoalModel goalModel,
+            GoalController sut)
+        {
+            // Arranges
+            sut.GoalMapper.Map(Arg.Is(goalModel)).Returns(goal);
+            sut.GoalService.UpdateAsync(Arg.Is(goal)).Returns(false);
+
+            // Act
+            var result = await sut.Put(goalModel);
+
+            // Asserts
+            result.Should().NotBeNull();
+            result.Should().BeOfType<StatusCodeResult>();
+            ((StatusCodeResult)result).StatusCode.Should().Be(304);
+            sut.GoalMapper.Received(1).Map(Arg.Is(goalModel));
+            await sut.GoalService.Received(1).UpdateAsync(Arg.Is(goal));
+        }
+
+        [Theory, AutoNSubstituteData]
+        public async Task Put_WhenInvalidModelState_ShouldReturnBadRequest(
+            GoalModel goalModel,
+            GoalController sut)
+        {
+            // Arranges
+            sut.ModelState.AddModelError("Error key", "Error message");
+
+            // Act
+            var result = await sut.Put(goalModel);
+
+            // Asserts
+            result.Should().BeOfType<BadRequestObjectResult>();
+            ((BadRequestObjectResult)result).Value.Should()
+                .BeOfType<SerializableError>();
+            sut.GoalMapper.DidNotReceive().Map(Arg.Any<GoalModel>());
+            await sut.GoalService.DidNotReceive().UpdateAsync(Arg.Any<Goal>());
+        }
     }
 }
