@@ -41,9 +41,11 @@ namespace Api.Core.Services
             return goal;
         }
 
-        public Task<bool> UpdateAsync(Goal goal)
+        public async Task<bool> UpdateAsync(Goal goal)
         {
-            throw new NotImplementedException();
+            var updated = await GoalRepository.UpdateAsync(goal);
+
+            return updated;
         }
     }
 }

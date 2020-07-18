@@ -109,5 +109,39 @@ namespace Api.UnitTests.Core.Services
             await sut.GoalRepository.Received(1)
                 .CreateAsync(Arg.Is<Goal>(x => x.Id != Guid.Empty));
         }
+
+        [Theory, AutoNSubstituteData]
+        public async Task UpdateAsync_WhenSuccess_ShouldCallMethodCorrectly(
+            Goal goal,
+            GoalService sut)
+        {
+            // Arrange
+            goal.Id = Guid.Empty;
+            sut.GoalRepository.UpdateAsync(Arg.Is(goal)).Returns(true);
+
+            // Act
+            var result = await sut.UpdateAsync(goal);
+
+            // Asserts
+            result.Should().BeTrue();
+            await sut.GoalRepository.Received(1).UpdateAsync(Arg.Is(goal));
+        }
+
+        [Theory, AutoNSubstituteData]
+        public async Task UpdateAsync_WhenFails_ShouldCallMethodCorrectly(
+            Goal goal,
+            GoalService sut)
+        {
+            // Arrange
+            goal.Id = Guid.Empty;
+            sut.GoalRepository.UpdateAsync(Arg.Is(goal)).Returns(false);
+
+            // Act
+            var result = await sut.UpdateAsync(goal);
+
+            // Asserts
+            result.Should().BeFalse();
+            await sut.GoalRepository.Received(1).UpdateAsync(Arg.Is(goal));
+        }
     }
 }

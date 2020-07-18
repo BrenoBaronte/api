@@ -8,7 +8,8 @@ namespace Api.Domain.Repositories
     public interface IGoalRepository
     {
         Task<List<Goal>> GetAllAsync();
-        Task<bool> CreateAsync(Goal goal);
         Task<Goal> GetAsync(Guid goalId);
+        Task<bool> CreateAsync(Goal goal);
+        Task<bool> UpdateAsync(Goal goal);
     }
 }

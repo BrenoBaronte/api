@@ -61,5 +61,10 @@ namespace Api.Repositories.Repositories
                 return rollsAffeected == 1;
             }
         }
+
+        public Task<bool> UpdateAsync(Goal goal)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
