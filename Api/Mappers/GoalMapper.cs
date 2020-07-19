@@ -44,6 +44,7 @@ namespace Api.Mappers
         {
             return new Goal
             {
+                Id = goalModel.Id,
                 Title = goalModel.Title,
                 Count = goalModel.Count
             };

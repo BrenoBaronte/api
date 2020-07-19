@@ -71,7 +71,7 @@ namespace Api.Controllers
             var goal = GoalMapper.Map(goalModel);
             var goalUpdated = await GoalService.UpdateAsync(goal);
 
-
+            //fix model id guid empty
             return goalUpdated
                 ? Ok(goalModel) as IActionResult
                 : StatusCode((int)HttpStatusCode.NotModified);

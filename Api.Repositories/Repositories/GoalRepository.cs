@@ -62,9 +62,18 @@ namespace Api.Repositories.Repositories
             }
         }
 
-        public Task<bool> UpdateAsync(Goal goal)
+        public async Task<bool> UpdateAsync(Goal goal)
         {
-            throw new NotImplementedException();
+            using (var connection = SqlConnectionFactory.GetConnection())
+            {
+                connection.Open();
+
+                var rollsAffected = await connection.ExecuteAsync(
+                    "UPDATE [Goal] SET Title = @Title, Count = @Count " +
+                    "WHERE Id = @Id", goal);
+
+                return rollsAffected == 1;
+            }
         }
     }
 }

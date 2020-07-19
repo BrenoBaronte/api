@@ -85,9 +85,33 @@ namespace Api.IntegrationTests.Repositories
 
             // Act
             var result = await sut.CreateAsync(goal);
+            var createdGoal = await sut.GetAsync(goal.Id);
 
             // Asserts
             result.Should().BeTrue();
+            createdGoal.Should().BeEquivalentTo(goal);
+        }
+
+        [Theory, AutoDataNSubstitute]
+        public async Task UpdateAsync_ShouldPerformCorrectly(
+            SqlConnectionFactory sqlConnectionFactory)
+        {
+            // Arrange
+            var sut = new GoalRepository(sqlConnectionFactory);
+            var goal = new Goal
+            {
+                Id = new Guid("f4f25a21-6a88-4623-89cc-7d0ed349e0ea"),
+                Title = "Study Investment",
+                Count = 40
+            };
+
+            // Act
+            var result = await sut.UpdateAsync(goal);
+            var updatedGoal = await sut.GetAsync(goal.Id);
+
+            // Asserts
+            result.Should().BeTrue();
+            updatedGoal.Should().BeEquivalentTo(goal);
         }
     }
 }
