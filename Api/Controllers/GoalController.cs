@@ -73,7 +73,7 @@ namespace Api.Controllers
             var goalUpdated = await GoalService.UpdateAsync(goal);
 
             return goalUpdated
-                ? Ok(goalModel) as IActionResult
+                ? NoContent()
                 : StatusCode((int)HttpStatusCode.NotModified);
         }
 
@@ -83,7 +83,7 @@ namespace Api.Controllers
             var goalDeleted = await GoalService.DeleteAsync(goalId);
 
             return goalDeleted
-                ? Ok()
+                ? NoContent()
                 : StatusCode((int)HttpStatusCode.NotModified);
         }
     }

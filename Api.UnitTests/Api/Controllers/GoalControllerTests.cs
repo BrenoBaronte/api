@@ -144,7 +144,7 @@ namespace Api.UnitTests.Api.Controllers
         }
 
         [Theory, AutoNSubstituteData]
-        public async Task Put_ShouldCallMethodsCorrectly(
+        public async Task Put_ShouldReturnNoContent(
             Goal goal,
             GoalModel goalModel,
             GoalController sut)
@@ -158,8 +158,7 @@ namespace Api.UnitTests.Api.Controllers
 
             // Asserts
             result.Should().NotBeNull();
-            result.Should().BeOfType<OkObjectResult>();
-            ((OkObjectResult)result).Value.Should().BeEquivalentTo(goalModel);
+            result.Should().BeOfType<NoContentResult>();
             sut.GoalMapper.Received(1).Map(Arg.Is(goalModel));
             await sut.GoalService.Received(1).UpdateAsync(Arg.Is(goal));
         }
@@ -205,7 +204,7 @@ namespace Api.UnitTests.Api.Controllers
         }
 
         [Theory, AutoNSubstituteData]
-        public async Task Delete_ShouldReturnOk(
+        public async Task Delete_ShouldReturnNoContent(
             Guid goalId,
             GoalController sut)
         {
@@ -217,7 +216,7 @@ namespace Api.UnitTests.Api.Controllers
 
             // Asserts
             result.Should().NotBeNull();
-            result.Should().BeOfType<OkResult>();
+            result.Should().BeOfType<NoContentResult>();
             await sut.GoalService.Received(1).DeleteAsync(Arg.Is(goalId));
         }
 
