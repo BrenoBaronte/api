@@ -92,7 +92,8 @@ namespace Api.UnitTests.Api.Controllers
         {
             // Arranges
             sut.GoalMapper.Map(Arg.Is(goalModel)).Returns(goal);
-            sut.GoalService.CreateAsync(Arg.Is(goal)).Returns(true);
+            sut.GoalService.CreateAsync(Arg.Is(goal)).Returns(goal);
+            sut.GoalMapper.Map(Arg.Is(goal)).Returns(goalModel);
 
             // Act
             var result = await sut.Post(goalModel);
@@ -102,6 +103,7 @@ namespace Api.UnitTests.Api.Controllers
             ((CreatedResult)result).Value.Should().Be(goalModel);
             sut.GoalMapper.Received(1).Map(Arg.Is(goalModel));
             await sut.GoalService.Received(1).CreateAsync(Arg.Is(goal));
+            sut.GoalMapper.Received(1).Map(Arg.Is(goal));
         }
 
         [Theory, AutoNSubstituteData]
@@ -112,7 +114,7 @@ namespace Api.UnitTests.Api.Controllers
         {
             // Arranges
             sut.GoalMapper.Map(Arg.Is(goalModel)).Returns(goal);
-            sut.GoalService.CreateAsync(Arg.Is(goal)).Returns(false);
+            sut.GoalService.CreateAsync(Arg.Is(goal)).ReturnsNull();
 
             // Act
             var result = await sut.Post(goalModel);
@@ -122,6 +124,7 @@ namespace Api.UnitTests.Api.Controllers
             ((StatusCodeResult)result).StatusCode.Should().Be(304);
             sut.GoalMapper.Received(1).Map(Arg.Is(goalModel));
             await sut.GoalService.Received(1).CreateAsync(Arg.Is(goal));
+            sut.GoalMapper.Received(1).Map(Arg.Any<Goal>());
         }
 
         [Theory, AutoNSubstituteData]
@@ -141,6 +144,7 @@ namespace Api.UnitTests.Api.Controllers
                 .BeOfType<SerializableError>();
             sut.GoalMapper.DidNotReceive().Map(Arg.Any<GoalModel>());
             await sut.GoalService.DidNotReceive().CreateAsync(Arg.Any<Goal>());
+            sut.GoalMapper.DidNotReceive().Map(Arg.Any<Goal>());
         }
 
         [Theory, AutoNSubstituteData]

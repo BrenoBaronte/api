@@ -87,7 +87,7 @@ namespace Api.UnitTests.Core.Services
             var result = await sut.CreateAsync(goal);
 
             // Asserts
-            result.Should().BeTrue();
+            result.Should().BeEquivalentTo(goal);
             await sut.GoalRepository.Received(1)
                 .CreateAsync(Arg.Is<Goal>(x => x.Id != Guid.Empty));
         }
@@ -105,7 +105,7 @@ namespace Api.UnitTests.Core.Services
             var result = await sut.CreateAsync(goal);
 
             // Asserts
-            result.Should().BeFalse();
+            result.Should().BeNull();
             await sut.GoalRepository.Received(1)
                 .CreateAsync(Arg.Is<Goal>(x => x.Id != Guid.Empty));
         }

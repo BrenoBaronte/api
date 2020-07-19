@@ -54,10 +54,11 @@ namespace Api.Controllers
                 return BadRequest(ModelState);
 
             var goal = GoalMapper.Map(goalModel);
-            var goalCreated = await GoalService.CreateAsync(goal);
+            var createdGoal = await GoalService.CreateAsync(goal);
 
-            // TODO fix model id guid empty
-            return goalCreated
+            goalModel = GoalMapper.Map(createdGoal);
+
+            return goalModel != null
                 ? Created(string.Empty, goalModel) as IActionResult
                 : StatusCode((int)HttpStatusCode.NotModified);
         }

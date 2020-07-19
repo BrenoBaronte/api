@@ -25,13 +25,15 @@ namespace Api.Core.Services
             return goals;
         }
 
-        public async Task<bool> CreateAsync(Goal goal)
+        public async Task<Goal> CreateAsync(Goal goal)
         {
             goal.Id = Guid.NewGuid();
 
             var created = await GoalRepository.CreateAsync(goal);
 
-            return created;
+            return created
+                ? goal
+                : null;
         }
 
         public async Task<Goal> GetAsync(Guid goalId)

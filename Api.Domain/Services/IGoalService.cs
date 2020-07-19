@@ -9,7 +9,7 @@ namespace Api.Domain.Services
     {
         Task<List<Goal>> GetAllAsync();
         Task<Goal> GetAsync(Guid goalId);
-        Task<bool> CreateAsync(Goal goal);
+        Task<Goal> CreateAsync(Goal goal);
         Task<bool> UpdateAsync(Goal goal);
         Task<bool> DeleteAsync(Guid goalId);
     }
