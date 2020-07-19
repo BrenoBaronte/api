@@ -17,3 +17,7 @@ VALUES ('ca41679d-ffb0-4899-a357-9f4de75d278a', 'Check E-mails', 50)
 -- Goal Repository - Test UpdateAsync
 INSERT INTO [dbo].[Goal] (Id, Title, Count)
 VALUES ('f4f25a21-6a88-4623-89cc-7d0ed349e0ea', 'Invest', 35)
+
+-- Goal Repository - Test DeleteAsync
+INSERT INTO [dbo].[Goal] (Id, Title, Count)
+VALUES ('74e2948a-37a4-457d-9254-2cbed39ae27f', 'I will be deleted', 100)

@@ -11,5 +11,6 @@ namespace Api.Domain.Repositories
         Task<Goal> GetAsync(Guid goalId);
         Task<bool> CreateAsync(Goal goal);
         Task<bool> UpdateAsync(Goal goal);
+        Task<bool> DeleteAsync(Guid goalId);
     }
 }

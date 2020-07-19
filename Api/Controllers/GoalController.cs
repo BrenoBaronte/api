@@ -56,6 +56,7 @@ namespace Api.Controllers
             var goal = GoalMapper.Map(goalModel);
             var goalCreated = await GoalService.CreateAsync(goal);
 
+            // TODO fix model id guid empty
             return goalCreated
                 ? Created(string.Empty, goalModel) as IActionResult
                 : StatusCode((int)HttpStatusCode.NotModified);
@@ -71,9 +72,18 @@ namespace Api.Controllers
             var goal = GoalMapper.Map(goalModel);
             var goalUpdated = await GoalService.UpdateAsync(goal);
 
-            //fix model id guid empty
             return goalUpdated
                 ? Ok(goalModel) as IActionResult
+                : StatusCode((int)HttpStatusCode.NotModified);
+        }
+
+        [HttpDelete("{goalId}")]
+        public async Task<IActionResult> Delete([FromRoute] Guid goalId)
+        {
+            var goalDeleted = await GoalService.DeleteAsync(goalId);
+
+            return goalDeleted
+                ? Ok()
                 : StatusCode((int)HttpStatusCode.NotModified);
         }
     }

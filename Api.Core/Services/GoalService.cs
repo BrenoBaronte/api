@@ -36,6 +36,7 @@ namespace Api.Core.Services
 
         public async Task<Goal> GetAsync(Guid goalId)
         {
+            //validate guid empty
             var goal = await GoalRepository.GetAsync(goalId);
 
             return goal;
@@ -46,6 +47,16 @@ namespace Api.Core.Services
             var updated = await GoalRepository.UpdateAsync(goal);
 
             return updated;
+        }
+
+        public async Task<bool> DeleteAsync(Guid goalId)
+        {
+            if (goalId.Equals(Guid.Empty))
+                return false;
+
+            var deleted = await GoalRepository.DeleteAsync(goalId);
+
+            return deleted;
         }
     }
 }

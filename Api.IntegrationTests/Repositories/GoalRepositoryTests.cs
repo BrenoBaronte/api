@@ -113,5 +113,41 @@ namespace Api.IntegrationTests.Repositories
             result.Should().BeTrue();
             updatedGoal.Should().BeEquivalentTo(goal);
         }
+
+        // TODO: test for update fails because id doesnt exist
+
+        [Theory, AutoDataNSubstitute]
+        public async Task DeleteAsync_ShouldPerformCorrectly(
+            SqlConnectionFactory sqlConnectionFactory)
+        {
+            // Arrange
+            var sut = new GoalRepository(sqlConnectionFactory);
+            var goalId = new Guid("74e2948a-37a4-457d-9254-2cbed39ae27f");
+
+            // Act
+            var result = await sut.DeleteAsync(goalId);
+            var deletedGoal = await sut.GetAsync(goalId);
+
+            // Asserts
+            result.Should().BeTrue();
+            deletedGoal.Should().BeNull();
+        }
+
+        [Theory, AutoDataNSubstitute]
+        public async Task DeleteAsync_WhenIdDoesntExist_ShouldPerformCorrectly(
+           SqlConnectionFactory sqlConnectionFactory)
+        {
+            // Arrange
+            var sut = new GoalRepository(sqlConnectionFactory);
+            var goalId = new Guid("74e2948a-0000-0000-0000-2cbed39ae27f");
+
+            // Act
+            var result = await sut.DeleteAsync(goalId);
+            var goal = await sut.GetAsync(goalId);
+
+            // Asserts
+            result.Should().BeFalse();
+            goal.Should().BeNull();
+        }
     }
 }

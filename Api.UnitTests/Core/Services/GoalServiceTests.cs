@@ -143,5 +143,52 @@ namespace Api.UnitTests.Core.Services
             result.Should().BeFalse();
             await sut.GoalRepository.Received(1).UpdateAsync(Arg.Is(goal));
         }
+
+        [Theory, AutoNSubstituteData]
+        public async Task DeleteAsync_ShouldCallMethodCorrectly(
+            Guid goalId,
+            GoalService sut)
+        {
+            // Arrange
+            sut.GoalRepository.DeleteAsync(Arg.Is(goalId)).Returns(true);
+
+            // Act
+            var result = await sut.DeleteAsync(goalId);
+
+            // Asserts
+            result.Should().BeTrue();
+            await sut.GoalRepository.Received(1).DeleteAsync(Arg.Is(goalId));
+        }
+
+        [Theory, AutoNSubstituteData]
+        public async Task DeleteAsync_WhenDeleteFails_ShouldReturnCorrectly(
+            Guid goalId,
+            GoalService sut)
+        {
+            // Arrange
+            sut.GoalRepository.DeleteAsync(Arg.Is(goalId)).Returns(false);
+
+            // Act
+            var result = await sut.DeleteAsync(goalId);
+
+            // Asserts
+            result.Should().BeFalse();
+            await sut.GoalRepository.Received(1).DeleteAsync(Arg.Is(goalId));
+        }
+
+        [Theory, AutoNSubstituteData]
+        public async Task DeleteAsync_WhenGoalIdGuidEmpty_ShouldReturnFalse(
+            GoalService sut)
+        {
+            // Arrange
+            var goalId = Guid.Empty;
+
+            // Act
+            var result = await sut.DeleteAsync(goalId);
+
+            // Asserts
+            result.Should().BeFalse();
+            await sut.GoalRepository.DidNotReceive().DeleteAsync(Arg.Any<Guid>());
+        }
     }
 }

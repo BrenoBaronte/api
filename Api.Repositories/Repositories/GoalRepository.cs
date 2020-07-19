@@ -75,5 +75,19 @@ namespace Api.Repositories.Repositories
                 return rollsAffected == 1;
             }
         }
+
+        public async Task<bool> DeleteAsync(Guid goalId)
+        {
+            using (var connection = SqlConnectionFactory.GetConnection())
+            {
+                connection.Open();
+
+                var rollsAffected = await connection.ExecuteAsync(
+                    "DELETE FROM [Goal] WHERE Id = @Id",
+                    new { Id = goalId });
+
+                return rollsAffected == 1;
+            }
+        }
     }
 }

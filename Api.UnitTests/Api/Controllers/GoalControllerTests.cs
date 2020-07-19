@@ -203,5 +203,40 @@ namespace Api.UnitTests.Api.Controllers
             sut.GoalMapper.DidNotReceive().Map(Arg.Any<GoalModel>());
             await sut.GoalService.DidNotReceive().UpdateAsync(Arg.Any<Goal>());
         }
+
+        [Theory, AutoNSubstituteData]
+        public async Task Delete_ShouldReturnOk(
+            Guid goalId,
+            GoalController sut)
+        {
+            // Arrange
+            sut.GoalService.DeleteAsync(Arg.Is(goalId)).Returns(true);
+
+            // Act
+            var result = await sut.Delete(goalId);
+
+            // Asserts
+            result.Should().NotBeNull();
+            result.Should().BeOfType<OkResult>();
+            await sut.GoalService.Received(1).DeleteAsync(Arg.Is(goalId));
+        }
+
+        [Theory, AutoNSubstituteData]
+        public async Task Delete_WhenDeleteFails_ShouldReturnNotModified(
+            Guid goalId,
+            GoalController sut)
+        {
+            // Arrange
+            sut.GoalService.DeleteAsync(Arg.Is(goalId)).Returns(false);
+
+            // Act
+            var result = await sut.Delete(goalId);
+
+            // Asserts
+            result.Should().NotBeNull();
+            result.Should().BeOfType<StatusCodeResult>();
+            ((StatusCodeResult)result).StatusCode.Should().Be(304);
+            await sut.GoalService.Received(1).DeleteAsync(Arg.Is(goalId));
+        }
     }
 }
