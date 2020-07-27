@@ -40,7 +40,7 @@ namespace Api.UnitTests.Core.Services
         }
 
         [Theory, AutoNSubstituteData]
-        public async Task GetAsync_ShouldCallMethodCorrectly(
+        public async Task GetAsync_WhenGoalNotInCache_ShouldCallMethodCorrectly(
             Guid goalId,
             Goal goal,
             GoalService sut)
@@ -55,7 +55,35 @@ namespace Api.UnitTests.Core.Services
             result.Should().NotBeNull();
             result.Should().BeEquivalentTo(goal);
             result.Should().BeOfType<Goal>();
+            await sut.CacheService.Received(1).GetAsync<Goal>(
+                Arg.Is($"{typeof(Goal).Name}-{goalId}"));
             await sut.GoalRepository.Received(1).GetAsync(Arg.Is(goalId));
+            await sut.CacheService.Received(1).SetAsync<Goal>(
+                Arg.Is($"{typeof(Goal).Name}-{goalId}"), Arg.Is(goal));
+        }
+
+        [Theory, AutoNSubstituteData]
+        public async Task GetAsync_WhenGoalInCache_ShouldCallMethodCorrectly(
+            Guid goalId,
+            Goal goal,
+            GoalService sut)
+        {
+            // Arrange
+            sut.CacheService.GetAsync<Goal>(Arg.Is($"{typeof(Goal).Name}-{goalId}"))
+                .Returns(goal);
+
+            // Act
+            var result = await sut.GetAsync(goalId);
+
+            // Asserts
+            result.Should().NotBeNull();
+            result.Should().BeEquivalentTo(goal);
+            result.Should().BeOfType<Goal>();
+            await sut.CacheService.Received(1).GetAsync<Goal>(
+                Arg.Is($"{typeof(Goal).Name}-{goalId}"));
+            await sut.GoalRepository.DidNotReceive().GetAsync(Arg.Any<Guid>());
+            await sut.CacheService.DidNotReceive().SetAsync<Goal>(
+                Arg.Any<string>(), Arg.Any<Goal>());
         }
 
         [Theory, AutoNSubstituteData]
@@ -71,7 +99,31 @@ namespace Api.UnitTests.Core.Services
 
             // Asserts
             result.Should().BeNull();
+            await sut.CacheService.Received(1).GetAsync<Goal>(
+                Arg.Is($"{typeof(Goal).Name}-{goalId}"));
             await sut.GoalRepository.Received(1).GetAsync(Arg.Is(goalId));
+            await sut.CacheService.DidNotReceive().SetAsync<Goal>(
+                Arg.Any<string>(), Arg.Any<Goal>());
+        }
+
+        [Theory, AutoNSubstituteData]
+        public async Task GetAsync_WhenGoalIdEmpty_ShouldReturnNull(
+            GoalService sut)
+        {
+            // Arrange
+            var goalId = Guid.Empty;
+
+            // Act
+            var result = await sut.GetAsync(goalId);
+
+            // Asserts
+            result.Should().BeNull();
+            await sut.CacheService.DidNotReceive().GetAsync<Goal>(
+                Arg.Any<string>());
+            await sut.GoalRepository.DidNotReceive().GetAsync(
+                Arg.Any<Guid>());
+            await sut.CacheService.DidNotReceive().SetAsync<Goal>(
+                Arg.Any<string>(), Arg.Any<Goal>());
         }
 
         [Theory, AutoNSubstituteData]

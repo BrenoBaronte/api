@@ -9,11 +9,16 @@ namespace Api.Core.Services
 {
     public class GoalService : IGoalService
     {
+        // todo: Rename, removing async from methods
+        public ICacheService CacheService { get; } // isso daqui ta mais pra um repository, trocar
         public IGoalRepository GoalRepository { get; }
 
         public GoalService(
+            ICacheService cacheService,
             IGoalRepository goalRepository)
         {
+            CacheService = cacheService
+                ?? throw new ArgumentNullException(nameof(cacheService));
             GoalRepository = goalRepository
                 ?? throw new ArgumentNullException(nameof(goalRepository));
         }
@@ -38,8 +43,19 @@ namespace Api.Core.Services
 
         public async Task<Goal> GetAsync(Guid goalId)
         {
-            //validate guid empty
+            if (goalId == Guid.Empty)
+                return null;
+
+            var goalKey = $"{typeof(Goal).Name}-{goalId}";
+            var cachedGoal = await CacheService.GetAsync<Goal>(goalKey);
+
+            if (cachedGoal != null)
+                return cachedGoal;
+
             var goal = await GoalRepository.GetAsync(goalId);
+
+            if (goal != null)
+                await CacheService.SetAsync<Goal>(goalKey, goal);
 
             return goal;
         }

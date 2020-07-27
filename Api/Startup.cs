@@ -34,12 +34,17 @@ namespace Api
 
             var builder = new ContainerBuilder();
 
+            var cacheConnectionString = "";
+            builder.RegisterType<RedisCacheService>().As<ICacheService>()
+                .WithParameter("cacheConnectionString", cacheConnectionString)
+                .InstancePerLifetimeScope();
+
             builder.RegisterType<GoalService>().As<IGoalService>().InstancePerLifetimeScope();
             builder.RegisterType<GoalMapper>().As<IGoalMapper>().InstancePerLifetimeScope();
 
-            var connectionString = "Server=tcp:barontedb.database.windows.net,1433;Initial Catalog=barontedb;Persist Security Info=False;User ID=baronte;Password=Mypasss4p;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
+            var databaseConnectionString = "";
             builder.RegisterType<SqlConnectionFactory>().As<ISqlConnectionFactory>()
-                .WithParameter("databaseConnectionString", connectionString)
+                .WithParameter("databaseConnectionString", databaseConnectionString)
                 .InstancePerLifetimeScope();
 
             builder.RegisterType<GoalRepository>().As<IGoalRepository>().InstancePerLifetimeScope();
