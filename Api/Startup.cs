@@ -1,8 +1,10 @@
 ﻿using Api.Controllers.Mappers.Interfaces;
 using Api.Core.Services;
+using Api.Domain.Caches;
 using Api.Domain.Repositories;
 using Api.Domain.Services;
 using Api.Mappers;
+using Api.Repositories.Caches;
 using Api.Repositories.DbConnection;
 using Api.Repositories.DbConnection.Interfaces;
 using Api.Repositories.Repositories;
@@ -34,15 +36,21 @@ namespace Api
 
             var builder = new ContainerBuilder();
 
-            var cacheConnectionString = "";
-            builder.RegisterType<RedisCacheService>().As<ICacheService>()
+            var cacheConnectionString = "baronte.redis.cache.windows.net:6380,password=1COzWe7wIXDuCxfmI+sgsfWHPG0XDd8yn808boCblPA=,ssl=True,abortConnect=False";
+            builder.RegisterType<RedisCache>().As<ICache>()
                 .WithParameter("cacheConnectionString", cacheConnectionString)
                 .InstancePerLifetimeScope();
 
             builder.RegisterType<GoalService>().As<IGoalService>().InstancePerLifetimeScope();
             builder.RegisterType<GoalMapper>().As<IGoalMapper>().InstancePerLifetimeScope();
 
-            var databaseConnectionString = "";
+            builder.RegisterType<GoalQuery>().Named<IGoalQuery>("GoalQuery");
+            builder.Register<IGoalQuery>((context) =>
+                new GoalQueryWithCache(
+                        context.Resolve<ICache>(),
+                        context.ResolveNamed<IGoalQuery>("GoalQuery")));
+
+            var databaseConnectionString = "Server=tcp:barontedb.database.windows.net,1433;Initial Catalog=barontedb;Persist Security Info=False;User ID=baronte;Password=Mypasss4p;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
             builder.RegisterType<SqlConnectionFactory>().As<ISqlConnectionFactory>()
                 .WithParameter("databaseConnectionString", databaseConnectionString)
                 .InstancePerLifetimeScope();

@@ -1,18 +1,18 @@
-﻿using Api.Domain.Services;
+﻿using Api.Domain.Caches;
 using Newtonsoft.Json;
 using StackExchange.Redis;
 using System;
 using System.Threading.Tasks;
 
-namespace Api.Core.Services
+namespace Api.Repositories.Caches
 {
-    public class RedisCacheService : ICacheService
+    public class RedisCache : ICache
     {
         public string CacheConnectionString { get; }
         public Lazy<ConnectionMultiplexer> Connection { get; }
         public IDatabase Cache { get; private set; }
 
-        public RedisCacheService(string cacheConnectionString)
+        public RedisCache(string cacheConnectionString)
         {
             CacheConnectionString = cacheConnectionString
                 ?? throw new ArgumentNullException(nameof(cacheConnectionString));
