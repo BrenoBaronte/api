@@ -1,12 +1,12 @@
 ﻿using Api.Domain.Entities;
-using Api.Domain.Repositories;
+using Api.Domain.Queries;
 using Api.Repositories.DbConnection.Interfaces;
 using Dapper;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Api.Repositories.Repositories
+namespace Api.Repositories.Queries
 {
     public class GoalQuery : IGoalQuery
     {

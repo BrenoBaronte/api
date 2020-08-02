@@ -1,12 +1,14 @@
 ﻿using Api.Controllers.Mappers.Interfaces;
 using Api.Core.Services;
 using Api.Domain.Caches;
+using Api.Domain.Queries;
 using Api.Domain.Repositories;
 using Api.Domain.Services;
 using Api.Mappers;
 using Api.Repositories.Caches;
 using Api.Repositories.DbConnection;
 using Api.Repositories.DbConnection.Interfaces;
+using Api.Repositories.Queries;
 using Api.Repositories.Repositories;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;

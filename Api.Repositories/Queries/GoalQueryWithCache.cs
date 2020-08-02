@@ -1,21 +1,21 @@
 ﻿using Api.Domain.Caches;
 using Api.Domain.Entities;
-using Api.Domain.Repositories;
+using Api.Domain.Queries;
 using System;
 using System.Threading.Tasks;
 
-namespace Api.Repositories.Repositories
+namespace Api.Repositories.Queries
 {
     public class GoalQueryWithCache : IGoalQuery
     {
-        public ICache CacheService { get; }
+        public ICache Cache { get; }
         public IGoalQuery InnerGoalQuery { get; }
 
         public GoalQueryWithCache(
             ICache cacheService,
             IGoalQuery goalQuery)
         {
-            CacheService = cacheService
+            Cache = cacheService
                 ?? throw new ArgumentNullException(nameof(cacheService));
             InnerGoalQuery = goalQuery
                 ?? throw new ArgumentNullException(nameof(goalQuery));
@@ -25,14 +25,14 @@ namespace Api.Repositories.Repositories
         {
             var goalKey = $"{typeof(Goal).Name}-{goalId}";
 
-            var cachedGoal = await CacheService.GetAsync<Goal>(goalKey);
+            var cachedGoal = await Cache.GetAsync<Goal>(goalKey);
 
             if (cachedGoal is Goal goalFromCache)
                 return goalFromCache;
 
             var goal = await InnerGoalQuery.GetAsync(goalId);
 
-            await CacheService.SetAsync<Goal>(goalKey, goal);
+            await Cache.SetAsync<Goal>(goalKey, goal);
 
             return goal;
         }

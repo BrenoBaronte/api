@@ -1,5 +1,5 @@
-﻿using Api.Domain.Caches;
-using Api.Domain.Entities;
+﻿using Api.Domain.Entities;
+using Api.Domain.Queries;
 using Api.Domain.Repositories;
 using Api.Domain.Services;
 using System;
@@ -11,28 +11,17 @@ namespace Api.Core.Services
     public class GoalService : IGoalService
     {
         // todo: Rename, removing async from methods
-        public ICache CacheService { get; } // isso daqui ta mais pra um repository, trocar
         public IGoalRepository GoalRepository { get; }
         public IGoalQuery GoalQuery { get; }
 
         public GoalService(
-            ICache cacheService,
             IGoalRepository goalRepository,
             IGoalQuery goalQuery)
         {
-            CacheService = cacheService
-                ?? throw new ArgumentNullException(nameof(cacheService));
             GoalRepository = goalRepository
                 ?? throw new ArgumentNullException(nameof(goalRepository));
             GoalQuery = goalQuery
                 ?? throw new ArgumentNullException(nameof(goalQuery));
-        }
-
-        public async Task<List<Goal>> GetAllAsync()
-        {
-            var goals = await GoalRepository.GetAllAsync();
-
-            return goals;
         }
 
         public async Task<Goal> CreateAsync(Goal goal)
@@ -44,6 +33,13 @@ namespace Api.Core.Services
             return created
                 ? goal
                 : null;
+        }
+
+        public async Task<List<Goal>> GetAllAsync()
+        {
+            var goals = await GoalRepository.GetAllAsync();
+
+            return goals;
         }
 
         public async Task<Goal> GetAsync(Guid goalId)

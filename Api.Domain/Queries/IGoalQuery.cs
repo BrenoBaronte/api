@@ -2,7 +2,7 @@
 using System;
 using System.Threading.Tasks;
 
-namespace Api.Domain.Repositories
+namespace Api.Domain.Queries
 {
     public interface IGoalQuery
     {
