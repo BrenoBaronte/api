@@ -10,7 +10,6 @@ namespace Api.Core.Services
 {
     public class GoalService : IGoalService
     {
-        // todo: Rename, removing async from methods
         public IGoalRepository GoalRepository { get; }
         public IGoalQuery GoalQuery { get; }
 

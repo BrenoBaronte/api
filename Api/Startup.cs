@@ -38,7 +38,7 @@ namespace Api
 
             var builder = new ContainerBuilder();
 
-            var cacheConnectionString = "baronte.redis.cache.windows.net:6380,password=1COzWe7wIXDuCxfmI+sgsfWHPG0XDd8yn808boCblPA=,ssl=True,abortConnect=False";
+            var cacheConnectionString = Configuration.GetConnectionString("RedisCache");
             builder.RegisterType<RedisCache>().As<ICache>()
                 .WithParameter("cacheConnectionString", cacheConnectionString)
                 .InstancePerLifetimeScope();
@@ -52,7 +52,8 @@ namespace Api
                         context.Resolve<ICache>(),
                         context.ResolveNamed<IGoalQuery>("GoalQuery")));
 
-            var databaseConnectionString = "Server=tcp:barontedb.database.windows.net,1433;Initial Catalog=barontedb;Persist Security Info=False;User ID=baronte;Password=Mypasss4p;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
+            var databaseConnectionString = Configuration.GetConnectionString("Database");
+
             builder.RegisterType<SqlConnectionFactory>().As<ISqlConnectionFactory>()
                 .WithParameter("databaseConnectionString", databaseConnectionString)
                 .InstancePerLifetimeScope();
@@ -77,7 +78,6 @@ namespace Api
                 app.UseHsts();
             }
 
-            //app.UseHttpsRedirection();
             app.UseMvc();
         }
     }
