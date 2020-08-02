@@ -6,6 +6,7 @@ using FluentAssertions;
 using NSubstitute;
 using NSubstitute.ReturnsExtensions;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -64,6 +65,51 @@ namespace Api.IntegrationTests.Queries
             await sut.Cache.Received(1).GetAsync<Goal>(Arg.Is(goalKey));
             await sut.InnerGoalQuery.Received(1).GetAsync(Arg.Is(goalId));
             await sut.Cache.Received(1).SetAsync<Goal>(Arg.Is(goalKey), Arg.Is(goal));
+        }
+
+        [Theory, AutoDataNSubstitute]
+        public async Task GetAllAsync_WhenGoalsCached_ShouldReturnCorrectly(
+            List<Goal> goals,
+            GoalQueryWithCache sut)
+        {
+            // Arrange
+            var allGoalsKey = "All-Goals";
+
+            sut.Cache.GetAsync<List<Goal>>(Arg.Is(allGoalsKey))
+                .Returns(goals);
+
+            // Act
+            var result = await sut.GetAllAsync();
+
+            // Assert
+            result.Should().NotBeNull();
+            result.Should().BeOfType<List<Goal>>();
+            result.Should().BeEquivalentTo(goals);
+            await sut.Cache.Received(1).GetAsync<List<Goal>>(Arg.Is(allGoalsKey));
+            await sut.InnerGoalQuery.DidNotReceive().GetAllAsync();
+            await sut.Cache.DidNotReceive().SetAsync<List<Goal>>(Arg.Any<string>(), Arg.Any<List<Goal>>());
+        }
+
+        [Theory, AutoDataNSubstitute]
+        public async Task GetAllAsync_WhenGoalsNotCached_ShouldCallMethodsCorrectly(
+            List<Goal> goals,
+            GoalQueryWithCache sut)
+        {
+            // Arrange
+            var allGoalsKey = "All-Goals";
+            sut.Cache.GetAsync<List<Goal>>(Arg.Any<string>()).ReturnsNull();
+            sut.InnerGoalQuery.GetAllAsync().Returns(goals);
+
+            // Act
+            var result = await sut.GetAllAsync();
+
+            // Assert
+            result.Should().NotBeNull();
+            result.Should().BeOfType<List<Goal>>();
+            result.Should().BeEquivalentTo(goals);
+            await sut.Cache.Received(1).GetAsync<List<Goal>>(Arg.Is(allGoalsKey));
+            await sut.InnerGoalQuery.Received(1).GetAllAsync();
+            await sut.Cache.Received(1).SetAsync<List<Goal>>(Arg.Is(allGoalsKey), Arg.Is(goals));
         }
     }
 }

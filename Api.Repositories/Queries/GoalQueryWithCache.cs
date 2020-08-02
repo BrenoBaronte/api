@@ -38,9 +38,20 @@ namespace Api.Repositories.Queries
             return goal;
         }
 
-        public Task<List<Goal>> GetAllAsync()
+        public async Task<List<Goal>> GetAllAsync()
         {
-            throw new NotImplementedException();
+            const string allGoalsKey = "All-Goals";
+
+            var cachedGoals = await Cache.GetAsync<List<Goal>>(allGoalsKey);
+
+            if (cachedGoals is List<Goal> goalsFromCache)
+                return goalsFromCache;
+
+            var goals = await InnerGoalQuery.GetAllAsync();
+
+            await Cache.SetAsync<List<Goal>>(allGoalsKey, goals);
+
+            return goals;
         }
     }
 }
