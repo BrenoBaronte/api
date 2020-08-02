@@ -37,7 +37,7 @@ namespace Api.Core.Services
 
         public async Task<List<Goal>> GetAllAsync()
         {
-            var goals = await GoalRepository.GetAllAsync();
+            var goals = await GoalQuery.GetAllAsync();
 
             return goals;
         }

@@ -3,6 +3,7 @@ using Api.Domain.Queries;
 using Api.Repositories.DbConnection.Interfaces;
 using Dapper;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -30,6 +31,19 @@ namespace Api.Repositories.Queries
                     .FirstOrDefault();
 
                 return goal;
+            }
+        }
+
+        public async Task<List<Goal>> GetAllAsync()
+        {
+            using (var connection = SqlConnectionFactory.GetConnection())
+            {
+                connection.Open();
+
+                var goals = await connection.QueryAsync<Goal>(
+                    "SELECT * FROM [Goal] (NOLOCK)");
+
+                return goals.ToList();
             }
         }
     }

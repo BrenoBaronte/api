@@ -27,7 +27,7 @@ namespace Api.UnitTests.Core.Services
             GoalService sut)
         {
             // Arrange
-            sut.GoalRepository.GetAllAsync().Returns(goals);
+            sut.GoalQuery.GetAllAsync().Returns(goals);
 
             // Act
             var result = await sut.GetAllAsync();
@@ -36,7 +36,7 @@ namespace Api.UnitTests.Core.Services
             result.Should().NotBeNull();
             result.Should().BeEquivalentTo(goals);
             result.Should().BeOfType<List<Goal>>();
-            await sut.GoalRepository.Received(1).GetAllAsync();
+            await sut.GoalQuery.Received(1).GetAllAsync();
         }
 
         [Theory, AutoNSubstituteData]

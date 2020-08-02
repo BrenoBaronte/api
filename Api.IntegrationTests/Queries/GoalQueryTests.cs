@@ -51,5 +51,28 @@ namespace Api.IntegrationTests.Queries
             // Asserts
             result.Should().BeNull();
         }
+
+
+        [Theory, AutoDataNSubstitute]
+        public async Task GetAllAsync_ShouldReturnCorrectly(
+            SqlConnectionFactory sqlConnectionFactory)
+        {
+            // Arrange
+            var sut = new GoalQuery(sqlConnectionFactory);
+
+            // Act
+            var result = await sut.GetAllAsync();
+
+            // Asserts
+            result.Should().Contain(g =>
+                g.Title == "Study English" &&
+                g.Count == 110);
+            result.Should().Contain(g =>
+                g.Title == "Workout" &&
+                g.Count == 77);
+            result.Should().Contain(g =>
+                g.Title == "Create Portfolio" &&
+                g.Count == 40);
+        }
     }
 }

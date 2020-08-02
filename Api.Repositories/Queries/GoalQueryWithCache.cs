@@ -2,6 +2,7 @@
 using Api.Domain.Entities;
 using Api.Domain.Queries;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Api.Repositories.Queries
@@ -35,6 +36,11 @@ namespace Api.Repositories.Queries
             await Cache.SetAsync<Goal>(goalKey, goal);
 
             return goal;
+        }
+
+        public Task<List<Goal>> GetAllAsync()
+        {
+            throw new NotImplementedException();
         }
     }
 }
