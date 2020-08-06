@@ -4,6 +4,7 @@ using Api.Domain.Caches;
 using Api.Domain.Queries;
 using Api.Domain.Repositories;
 using Api.Domain.Services;
+using Api.Infrastructure.Filters;
 using Api.Mappers;
 using Api.Repositories.Caches;
 using Api.Repositories.DbConnection;
@@ -34,7 +35,9 @@ namespace Api
 
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.AddMvc(setup =>
+                    setup.Filters.Add(new ExceptionFilter()))
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
             var builder = new ContainerBuilder();
 
