@@ -14,13 +14,6 @@ This repo shows two differents examples of how to do it following CQS(<a href="h
 
 This project has two endpoints(Get by identifier and Get all resources) using Cache with Redis. 
 
-### What's comming?
-
-- Logging(propaly with Serilog).
-- Memory Cache implementation.
-- Integration with SqlServer using EntityFramework Core.
-- Integration with NoSql Database.
-
 ### Issues
 
 - Feel free to open any issue if you look anything suspect and I'll check it out ;)
