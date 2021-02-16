@@ -5,8 +5,11 @@ using Dapper;
 using System;
 using System.Threading.Tasks;
 
-namespace Api.Repositories.Repositories
+namespace Api.Repositories.Commands
 {
+    /// <summary>
+    /// Implementation of IGoalCommand using ADO.NET
+    /// </summary>
     public class GoalCommand : IGoalCommand
     {
         public ISqlConnectionFactory SqlConnectionFactory { get; }

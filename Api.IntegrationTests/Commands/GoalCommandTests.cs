@@ -1,17 +1,17 @@
 ﻿using Api.Domain.Entities;
 using Api.IntegrationTests.AutoData;
+using Api.Repositories.Commands;
 using Api.Repositories.DbConnection;
-using Api.Repositories.Repositories;
 using AutoFixture.Idioms;
 using FluentAssertions;
 using System;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace Api.IntegrationTests.Repositories
+namespace Api.IntegrationTests.Commands
 {
     [Collection("DatabaseSetup")]
-    public class GoalRepositoryTests
+    public class GoalCommandTests
     {
         [Theory, AutoDataNSubstitute]
         public void GuardClausesTest(
