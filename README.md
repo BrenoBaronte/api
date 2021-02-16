@@ -1,14 +1,14 @@
 # Api
 
 An API with CRUD example using REST principles. 
-This project is based on .Net Core 2.2.0 and ASP.NET Core 2.2.0 
+This project is based on .Net Core 3.1 
 
 ## Database
 
 In this project we have integration with a SqlServer Database. 
-This repo shows two differents examples of how to do it: 
-- <a href="https://github.com/BrenoBaronte/api/blob/master/Api.Repositories/Queries/GoalQuery.cs">GoalQuery</a>, using Dapper ORM.
-- <a href="https://github.com/BrenoBaronte/api/blob/master/Api.Repositories/Queries/GoalQuery2.cs">GoalQuery2</a>, using simple ADO.NET.
+This repo shows two differents examples of how to do it following CQS(<a href="https://martinfowler.com/bliki/CommandQuerySeparation.html">CommandQuerySeparation</a>): 
+- <a href="https://github.com/BrenoBaronte/api/blob/master/Api.Repositories/Queries/GoalQuery.cs">GoalQuery</a> and <a href="https://github.com/BrenoBaronte/api/blob/master/Api.Repositories/Commands/GoalCommand.cs">GoalCommand</a>, using Dapper ORM.
+- <a href="https://github.com/BrenoBaronte/api/blob/master/Api.Repositories/Queries/GoalQuery2.cs">GoalQuery2</a> and <a href="https://github.com/BrenoBaronte/api/blob/master/Api.Repositories/Commands/GoalCommand2.cs">GoalCommand2</a>, using simple ADO.NET.
  
 ## Cache
 
