@@ -13,7 +13,6 @@ This project has two endpoints(Get by identifier and Get all resources) using Ca
 
 ### What's comming?
 
-- Exception Filter.
 - Logging(propaly with Serilog).
 - Memory Cache implementation.
 - Example with Ado.Net.
