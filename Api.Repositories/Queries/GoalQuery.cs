@@ -9,6 +9,9 @@ using System.Threading.Tasks;
 
 namespace Api.Repositories.Queries
 {
+    /// <summary>
+    /// Implementation of IGoalQuery using Dapper
+    /// </summary>
     public class GoalQuery : IGoalQuery
     {
         public ISqlConnectionFactory SqlConnectionFactory { get; }

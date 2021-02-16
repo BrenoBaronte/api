@@ -4,7 +4,7 @@ using Api.Domain.Caches;
 using Api.Domain.Queries;
 using Api.Domain.Repositories;
 using Api.Domain.Services;
-using Api.Infrastructure.Filters;
+using Api.Filters;
 using Api.Mappers;
 using Api.Repositories.Caches;
 using Api.Repositories.DbConnection;
@@ -15,7 +15,6 @@ using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -36,8 +35,7 @@ namespace Api
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
             services.AddMvc(setup =>
-                    setup.Filters.Add(new ExceptionFilter()))
-                .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+                    setup.Filters.Add(new ExceptionFilter()));
 
             var builder = new ContainerBuilder();
 
@@ -49,7 +47,12 @@ namespace Api
             builder.RegisterType<GoalService>().As<IGoalService>().InstancePerLifetimeScope();
             builder.RegisterType<GoalMapper>().As<IGoalMapper>().InstancePerLifetimeScope();
 
-            builder.RegisterType<GoalQuery>().Named<IGoalQuery>("GoalQuery");
+            // Implementation of IGoalQuery with Dapper 
+            // builder.RegisterType<GoalQuery>().Named<IGoalQuery>("GoalQuery");
+
+            // Implementation of IGoalQuery with ADO.NET
+            builder.RegisterType<GoalQuery2>().Named<IGoalQuery>("GoalQuery");
+
             builder.Register<IGoalQuery>((context) =>
                 new GoalQueryWithCache(
                         context.Resolve<ICache>(),
