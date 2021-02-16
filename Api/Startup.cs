@@ -81,7 +81,18 @@ namespace Api
                 app.UseHsts();
             }
 
-            app.UseMvc();
+            app.UseStaticFiles();
+
+            app.UseRouting();
+            app.UseCors();
+
+            app.UseAuthentication();
+            app.UseAuthorization();
+
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+            });
         }
     }
 }

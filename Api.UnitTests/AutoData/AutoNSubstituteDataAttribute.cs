@@ -7,7 +7,10 @@ namespace Api.UnitTests.AutoData
     public class AutoNSubstituteDataAttribute : AutoDataAttribute
     {
         public AutoNSubstituteDataAttribute() : base(() =>
-            new Fixture().Customize(new AutoNSubstituteCustomization()))
+            new Fixture().Customize(
+                new CompositeCustomization(
+                    new AutoNSubstituteCustomization(),
+                    new ControllersCustomization())))
         {
         }
     }
