@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Api.Domain.Repositories
 {
-    public interface IGoalRepository
+    public interface IGoalCommand
     {
         Task<bool> CreateAsync(Goal goal);
         Task<bool> UpdateAsync(Goal goal);

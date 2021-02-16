@@ -17,7 +17,7 @@ namespace Api.IntegrationTests.Repositories
         public void GuardClausesTest(
             GuardClauseAssertion assertion)
         {
-            assertion.Verify(typeof(GoalRepository).GetConstructors());
+            assertion.Verify(typeof(GoalCommand).GetConstructors());
         }
 
         [Theory, AutoDataNSubstitute]
@@ -26,7 +26,7 @@ namespace Api.IntegrationTests.Repositories
             SqlConnectionFactory sqlConnectionFactory)
         {
             // Arrange
-            var sut = new GoalRepository(sqlConnectionFactory);
+            var sut = new GoalCommand(sqlConnectionFactory);
 
             // Act
             var result = await sut.CreateAsync(goal);
@@ -40,7 +40,7 @@ namespace Api.IntegrationTests.Repositories
             SqlConnectionFactory sqlConnectionFactory)
         {
             // Arrange
-            var sut = new GoalRepository(sqlConnectionFactory);
+            var sut = new GoalCommand(sqlConnectionFactory);
             var goal = new Goal
             {
                 Id = new Guid("f4f25a21-6a88-4623-89cc-7d0ed349e0ea"),
@@ -62,7 +62,7 @@ namespace Api.IntegrationTests.Repositories
             SqlConnectionFactory sqlConnectionFactory)
         {
             // Arrange
-            var sut = new GoalRepository(sqlConnectionFactory);
+            var sut = new GoalCommand(sqlConnectionFactory);
             var goalId = new Guid("74e2948a-37a4-457d-9254-2cbed39ae27f");
 
             // Act
@@ -77,7 +77,7 @@ namespace Api.IntegrationTests.Repositories
            SqlConnectionFactory sqlConnectionFactory)
         {
             // Arrange
-            var sut = new GoalRepository(sqlConnectionFactory);
+            var sut = new GoalCommand(sqlConnectionFactory);
             var goalId = new Guid("74e2948a-0000-0000-0000-2cbed39ae27f");
 
             // Act

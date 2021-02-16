@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace Api.Repositories.Repositories
 {
-    public class GoalRepository : IGoalRepository
+    public class GoalCommand : IGoalCommand
     {
         public ISqlConnectionFactory SqlConnectionFactory { get; }
 
-        public GoalRepository(
+        public GoalCommand(
             ISqlConnectionFactory sqlConnectionFactory)
         {
             SqlConnectionFactory = sqlConnectionFactory

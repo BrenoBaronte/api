@@ -64,7 +64,7 @@ namespace Api
                 .WithParameter("databaseConnectionString", databaseConnectionString)
                 .InstancePerLifetimeScope();
 
-            builder.RegisterType<GoalRepository>().As<IGoalRepository>().InstancePerLifetimeScope();
+            builder.RegisterType<GoalCommand>().As<IGoalCommand>().InstancePerLifetimeScope();
 
             builder.Populate(services);
 

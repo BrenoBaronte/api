@@ -10,11 +10,11 @@ namespace Api.Core.Services
 {
     public class GoalService : IGoalService
     {
-        public IGoalRepository GoalRepository { get; }
+        public IGoalCommand GoalRepository { get; }
         public IGoalQuery GoalQuery { get; }
 
         public GoalService(
-            IGoalRepository goalRepository,
+            IGoalCommand goalRepository,
             IGoalQuery goalQuery)
         {
             GoalRepository = goalRepository
