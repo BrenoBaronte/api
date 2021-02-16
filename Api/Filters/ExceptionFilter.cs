@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc.Filters;
 using System.Net;
 
-namespace Api.Infrastructure.Filters
+namespace Api.Filters
 {
     public class ExceptionFilter : ExceptionFilterAttribute
     {
